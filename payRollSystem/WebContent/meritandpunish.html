@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>奖惩录入</title>
+  	<link rel="stylesheet" href="layui/css/layui.css"  media="all">     
+	<script src="layui/layui.js" charset="utf-8"></script>
+	<script src="js/jquery-3.5.1.js" charset="utf-8"></script>
+</head>
+<style type="text/css">
+	/*设置数据表表头*/
+	.layui-table th{
+	    text-align: center; /*表头居中*/
+	}
+	.layui-table td{
+		text-align: center; /*表格数据居中*/
+	}
+</style>
+<script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs" lay-event="merit">录入奖惩</a>
+	<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="reset">重置奖惩</a>
+</script>
+
+<script>
+layui.use('table', function(){
+	var table = layui.table;
+	//方法级渲染
+	var tableIns = table.render({
+		elem:'#staff_table',
+		url:'StaffHandler',   //请求URL
+		method:'post',
+		title: 'staff_table',
+		totalRow: true,
+		cols: [[ 
+			{field:'id', title:'工号', width:130, fixed: 'left', sort:true,totalRowText: '合计'},
+			{field:'name', title:'姓名', width:100},
+			{field:'weekendovertime', title:'周末加班(时\)', width:130, sort:true, totalRow: true},
+			{field:'festivalovertime', title:'节日加班(时\)', width:130, sort:true, totalRow: true},
+			{field:'saleCommission', title:'销售提成(元\)', width:130, sort:true, totalRow: true},
+			{field:'festivalWages', title:'福利奖金(元\)', width:130, sort:true, totalRow: true},
+			{field:'yearendWages', title:'年终奖金(元\)', width:130, sort:true,  totalRow: true},
+			{field:'leaveCount', title:'请假次数', width:110, sort:true,  totalRow: true},
+			{field:'lateCount', title:'迟到次数', width:110, sort:true,  totalRow: true},
+			{field:'absentCount', title:'旷工次数', width:110, sort:true,  totalRow: true},
+			{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
+		]],
+		id: 'staff_table',
+		page:true,
+		where:{
+			method:"getAllStaffMeritAndPunish"
+		},
+		parseData:function(res){  
+			if(this.page.curr){
+                result = res.item.slice(this.limit*(this.page.curr-1),this.limit*this.page.curr);
+            }
+            else{
+                result=res.item.slice(0,this.limit);
+            }
+			return {
+				"code" : res.code,//解析接口状态
+				"msg" : res.msg,//解析提示文本
+				"data" : result,//解析数据列表
+				"count": res.item.length
+			};
+		}
+	});
+	
+	var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#demoReload');
+				tableIns.reload({
+				    page: {
+				        curr: 1 //重新从第 1 页开始
+				    },where:{
+				    	id: demoReload.val(),
+				    	method:"searchStaffMeritAndPunishById"
+				    }
+				});
+            }
+        };
+	
+        /*绑定搜索点击事件*/
+        $('#searchExhibition').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+	
+  //监听工具行事件
+  table.on('tool(staff_table)',function(obj){
+	  var data = obj.data;
+	  if(obj.event=='merit') { //奖惩录入
+		  layer.open({
+			  type:1,
+			  title:["录入奖励",'font-size:14px;'],
+			  area:['420px', '560px'], 
+			  btn: ['确定', '取消'],
+			  content:$('#edit_merit_div'),
+			  success:function(layero,index){     
+				  layero.find('#department').val(data.department);
+				if(data.weekendovertime=="0"&&data.festivalovertime=="0"&&
+				  data.festivalWages=="0"&&data.yearendWages=="0"&&data.leaveCount=="0"
+				  &&data.lateCount=="0"&&data.absentCount=="0"){
+					  $("#edit_depatment")[0].reset() 
+				  }
+				else{
+					layero.find('#weekendovertime').val(data.weekendovertime);
+					layero.find('#festivalovertime').val(data.festivalovertime);
+					layero.find('#saleCommission').val(data.saleCommission);
+					layero.find('#festivalWages').val(data.festivalWages);
+					layero.find('#yearendWages').val(data.yearendWages);
+					layero.find('#leaveCount').val(data.leaveCount);
+					layero.find('#lateCount').val(data.lateCount);
+					layero.find('#absentCount').val(data.absentCount);
+				}
+				},
+			  yes:function(index, layero){  
+					
+				  if(VerifyIsEmpty(layero)==false){
+					  layer.msg("必填项，岂能为空？",{time:2000});
+				  }
+				  else{
+					  $.getJSON('StaffHandler',{  //请求URL
+						  id:data.id,
+						  weekendovertime:layero.find("#weekendovertime").val(),
+						  festivalovertime:layero.find("#festivalovertime").val(),
+						  saleCommission:layero.find("#saleCommission").val(),
+						  festivalWages:layero.find("#festivalWages").val(),
+						  yearendWages:layero.find("#yearendWages").val(),
+						  leaveCount:layero.find("#leaveCount").val(),
+						  lateCount:layero.find("#lateCount").val(),
+						  absentCount:layero.find("#absentCount").val(),
+						  method:"inputMeritAndPunish"
+					  },function(res){
+						  if(res.msg=="success"){
+							  layer.msg("录入成功");
+						  }else{
+							  layer.msg("录入失败");
+						  }
+						  layer.close(index);
+					  })
+					  table.reload('staff_table', {})
+				  }
+			  }
+		  })
+	  }
+	  else if(obj.event=="reset"){  //重置奖惩
+		 layer.confirm('确定重置吗？',{title:'重置'}, function(index){
+			 $.getJSON('StaffHandler',{ //请求URL
+				  id:data.id,
+				  method:"resetMeritAndPunish"
+			 },function(res){
+				 if(res.msg=="success"){
+					  layer.msg("重置成功");
+				  }else{
+					  layer.msg("重置失败");
+				  }
+				  table.reload('staff_table', {})
+			 })
+			 layer.close(index);
+			 
+		 })
+	  }
+  });
+  
+});
+</script>
+
+<script type="text/javascript"> //验证表单数据是否是数字
+	function checkScore(node){
+		var str = node.value;
+		var flag = 0;
+		if(!node.value == ""){
+			var str = node.value;
+	        if(str.match(/^\+?(:?(:?\d+)|(:?\d+))$/)){  
+	        }else{
+	            layer.msg("请输入有效数字!");
+	            node.value="";
+	            node.focus();
+				flag = 1;
+	        }
+	    } 
+		return flag;
+	}
+	function checkScoreAnddepartment(node){
+		if(checkScore(node)==1) 
+			return;
+		var dep = document.getElementById("department");
+		
+		if(dep.value!="市场部"&&node.value!=""){
+			if(node.value!="0"){
+				layer.msg("市场部才有销售提成",{time:2000});
+				node.value="";
+			}
+		}
+		
+	}
+	function VerifyIsEmpty(layero){
+		var week = layero.find("#weekendovertime");
+		var fest = layero.find("#festivalovertime");
+		var leave = layero.find("#leaveCount");
+		var late = layero.find("#lateCount");
+		var absent = layero.find("#absentCount");
+		var wages = layero.find("#festivalWages");
+		var year = layero.find("#yearendWages");
+		if(week.val()==""){
+			week.focus();
+			return false;
+		}else if(fest.val()==""){
+			fest.focus();
+			return false;
+		}else if(leave.val()==""){
+			leave.focus();
+			return false;
+		}else if(late.val()==""){
+			late.focus();
+			return false;
+		}else if(absent.val()==""){
+			absent.focus();
+			return false;
+		}else if(wages.val()==""){
+			wages.focus();
+			return false;
+		}else if(year.val()==""){
+			year.focus();
+			return false;
+		}
+	}
+</script>
+
+<body>
+	<div class="demoTable">
+		搜索工号：
+		<div class="layui-inline">
+			<input class="layui-input" name="demoReload" id="demoReload" autocomplete="off">
+		</div>
+		<button type="button" class="layui-btn layui-inline" id="searchExhibition"
+		 data-type="reload">搜索</button>
+	</div>
+	<table class="layui-hide" id="staff_table" lay-filter="staff_table"></table>
+	
+	<div id="edit_merit_div"style="margin: 6%; display:none;" >
+		<form class="layui-form layui-form-pane" id="edit_depatment">
+			<div class="layui-form-item">
+				<label class="layui-form-label">周末加班</label>
+				<div class="layui-input-block">
+				  <input type="text" id="weekendovertime" name="weekendovertime" 
+				  onblur="checkScore(this)"  placeholder="请输入周末加班时长" autocomplete="off"
+				   class="layui-input" style="width: 250px;">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">节日加班</label>
+				<div class="layui-input-block">
+				  <input type="text" id="festivalovertime" name="festivalovertime"
+				   onblur="checkScore(this)" placeholder="请输入节日加班时长" autocomplete="off" 
+				    class="layui-input" style="width: 250px;">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">请假次数</label>
+				<div class="layui-input-block">
+				  <input type="text" id="leaveCount" name="leaveCount" onblur="checkScore(this)" 
+				  placeholder="请输入请假次数" autocomplete="off" class="layui-input"
+				   style="width: 250px;">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">迟到次数</label>
+				<div class="layui-input-block">
+				  <input type="text" id="lateCount" name="lateCount" onblur="checkScore(this)" 
+				  placeholder="请输入迟到次数" autocomplete="off" class="layui-input"
+				   style="width: 250px;">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">旷工次数</label>
+				<div class="layui-input-block">
+				  <input type="text" id="absentCount" name="absentCount" onblur="checkScore(this)" 
+				  placeholder="请输入旷工次数" autocomplete="off" class="layui-input" 
+				  style="width: 250px;">
+				  
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">销售提成</label>
+				<div class="layui-input-block">
+					<input type="text" id="saleCommission" name="saleCommission" 
+					onblur="checkScoreAnddepartment(this)" placeholder="请输入销售提成"
+					 autocomplete="off" class="layui-input" style="width: 250px;">
+					<input type="text" id="department" name="department"  style="display:none">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">福利奖金</label>
+				<div class="layui-input-block">
+				  <input type="text" id="festivalWages" name="festivalWages"
+				   onblur="checkScore(this)" placeholder="请输入福利奖金" autocomplete="off" 
+				   class="layui-input" style="width: 250px;">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">年终奖金</label>
+				<div class="layui-input-block">
+				  <input type="text" id="yearendWages" name="yearendWages" 
+				  onblur="checkScore(this)" placeholder="请输入年终奖金" autocomplete="off" 
+				  class="layui-input" style="width: 250px;">
+				</div>
+			</div>
+		</form>
+	</div>
+	
+</body>
+</html>

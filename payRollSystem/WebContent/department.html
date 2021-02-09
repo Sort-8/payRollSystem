@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<title>部门管理</title>
+  	<meta name="renderer" content="webkit">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  	<link rel="stylesheet" href="layui/css/layui.css"  media="all">     
+	<script src="layui/layui.js" charset="utf-8"></script>
+	<script src="js/jquery-3.5.1.js" charset="utf-8"></script>
+</head>
+<style type="text/css">
+	/*设置数据表表头*/
+	.layui-table th{
+	    text-align: center; /*表头居中*/
+	}
+	.layui-table td{
+		text-align: center; /*表格数据居中*/
+	}
+</style>
+
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-sm" lay-event="add">添加部门</button>
+		<button class="layui-btn layui-btn-sm" lay-event="merge">合并部门</button>
+	</div>
+</script>
+<script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">更名</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+layui.use('table', function(){
+	var table = layui.table;
+	table.render({
+		elem: '#department_table'
+		,url:'DepartmentHandler'
+		,method:'post'
+		,toolbar: '#toolbarDemo' //开启头部工具栏
+		,title: 'department_table'
+		,cols: [[ //表格字段参数
+		{checkbox: true, fixed: true}
+		,{field:'name', title:'部门名称', width:120, fixed: 'left',sort:true}
+		,{field:'changedtime', title:'最近变更时间', width:180}
+		,{field:'operator', title:'变更操作者', width:150}
+		,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:160}
+		]]
+		,page: false
+		,where:{
+			method:"getAll",
+		}
+		,parseData:function(res){  //将原始解析成layui支持的数据
+			console.log(res);
+			if(this.page.curr){
+                result = res.item.slice(this.limit*(this.page.curr-1),this.limit*this.page.curr);
+            }
+            else{
+                result=res.item.slice(0,this.limit);
+            }
+			return {
+				"code" : res.code,//解析接口状态
+				"msg" : res.msg,//解析提示文本
+				"data" : result,//解析数据列表
+				"count": res.item.length
+			};
+		}
+	});
+ 
+	//头工具栏事件
+	table.on('toolbar(department_table)', function(obj){
+		var checkStatus = table.checkStatus(obj.config.id);
+		switch(obj.event){
+			case 'add':
+				layer.open({
+					type:1,
+					title:["添加部门",'font-size:14px;'],
+					area:['450px', '220px'], //宽高
+					btn: ['确定添加', '取消添加'],
+					content:$('#edit_depatment_div'),
+					yes:function(index, layero){              //确定按钮
+						if(layero.find("#add_name").val()!=""){
+							$.getJSON('DepartmentHandler',{
+								name:layero.find("#add_name").val(), 
+								method:"add",    
+								operator:"11958301029",
+								
+								/*！！！！！！！！！！！这里还要修改成当前用户的帐号*/
+							},function(res){
+								if(res.msg=="success"){
+									layer.msg("添加成功"); 
+								}else{
+									layer.msg("添加失败，请检查该部门名称是否存在");
+								}
+								layer.close(index);
+							})
+							table.reload('department_table', {})
+						}
+						else{
+							layer.msg("部门名称不能为空"); 
+						}
+					},
+					end:function(index, layero){              
+						layer.close(index);
+						$("#edit_depatment")[0].reset();
+						return false;
+					},
+				})
+				break;
+			case 'merge':
+				var data = checkStatus.data;
+				if(data.length<2){
+					layer.msg("合并部门需要部门数量大于或等于2");
+				}else{
+					layer.open({
+						type:1,
+						title:["合并部门",'font-size:14px;'],
+						area:['520px', '240px'],
+						btn: ['确定合并', '取消合并'],
+						content:$('#merge_depatment_div'),
+						btnAlign: 'c',
+						yes:function(index, layero){  //点击确定按钮
+							if(layero.find("#merge_name").val()!=""){
+								$.getJSON('DepartmentHandler',{
+									name:layero.find("#merge_name").val(),
+									data:JSON.stringify(data),
+									method:"merge", 
+									operator:"11958301029"
+									/*！！！！！！！！！！！这里还要修改成当前用户的帐号*/
+								},function(res){
+									if(res.msg=="success"){
+										layer.msg("合并成功"); 
+									}else{
+										layer.msg("合并失败，请检查除合并部门之外该部门名称是否存在");
+									}
+									table.reload('department_table', {});
+								})
+								layer.close(index);
+							}else{
+								layer.msg("部门名称不能为空"); 
+							}
+						},
+						end:function(index, layero){
+							$("#merge_depatment")[0].reset();
+							return false;
+						}
+					})
+				}
+				break;
+		}
+	});
+  
+  //监听行工具事件
+	table.on('tool(department_table)', function(obj){
+		var data = obj.data;  //拿到选中的一行数据
+		var chose_name = data.name;
+		if(obj.event == 'del'){ //删除
+			   layer.confirm('确定删除吗？',{title:'删除'}, function(index){
+				   $.getJSON('DepartmentHandler',{
+					   name:data.name,
+					   method:"del"
+					   }, function(res){
+						   if(res.msg=="success"){
+								layer.msg("删除成功"); 
+							}else{
+								layer.msg("删除失败");
+							}
+						table.reload('department_table', {})
+					}
+				);
+				layer.close(index);
+			});
+		} 
+		else if(obj.event == 'edit'){
+			layer.open({
+				type:1,
+				title:["更名部门",'font-size:14px;'],
+				area:['450px', '220px'],
+				btn: ['确定', '取消'],
+				content:$('#edit_depatment_div'),
+				success:function(layero,index){
+					layero.find("#add_name").val(data.name) ;  //赋值
+				},
+				end:function(index, layero){         //取消按钮
+					layer.close(index);
+					$("#edit_depatment")[0].reset();
+					return false;
+				},
+				yes:function(index,layero){          //确定按钮
+					if(data.name!=layero.find("#add_name").val()||data.manager!=layero.find("#add_manager").val()){ //更名栏发生修改
+						$.getJSON('DepartmentHandler',{
+						name:data.name, //原部门名称
+						changed_name:layero.find("#add_name").val(),  //更名后的部门名称
+						method:"edit", 
+<<<<<<< HEAD
+						operator:"119583010129"
+=======
+<<<<<<< HEAD
+						operator:"119583010129"
+=======
+<<<<<<< HEAD
+						operator:"119583010129"
+=======
+						changed_operator:"119583010129"
+>>>>>>> 1b279ae (这是Staff模块部分代码的提交)
+>>>>>>> 82a47b2 (这是一个Staff模块代码)
+>>>>>>> a7dd32c (这是一个Staff模块代码的提交)
+			//！！！！！！需要修改成用户的帐号
+						},function(res){
+							if(res.msg=="success"){
+								layer.msg("更名成功"); 
+							}else{
+								layer.msg("更名失败，请检查该部门名称是否存在");
+							}
+						})
+						layer.close(index);
+						$("#edit_depatment")[0].reset();
+						table.reload('department_table', {})
+					}
+					else{ //编辑栏没有修改过
+						layer.msg("还没有做出修改",{
+							time:2000
+						});
+					}
+					
+				}
+			});
+		}
+		
+	});
+});
+</script>
+
+<body>
+
+<table class="layui-hide" id="department_table" lay-filter="department_table"></table>
+
+<div id="edit_depatment_div"style="margin: 8%; display:none;" >
+	<form class="layui-form layui-form-pane" method="post" id="edit_depatment">
+		<div class="layui-form-item">
+			<label class="layui-form-label">部门名称</label>
+			<div class="layui-input-block">
+				<input type="text" id="add_name" name="add_name" required lay-verify="required" placeholder="请输入部门名称" autocomplete="off" class="layui-input" style="width: 250px;">
+			</div>
+		</div>
+	</form>
+</div>
+<div id="merge_depatment_div" style="margin: 8%; display:none;">
+	<form class="layui-form layui-form-pane" method="post" id="merge_depatment">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 160px;">合并后的部门名称</label>
+			<div class="layui-input-block">
+				<input type="text" id="merge_name" name="merge_name" required lay-verify="required" placeholder="请输入合并后的部门名称" autocomplete="off" class="layui-input" style="width: 260px;">
+			</div>
+		</div>
+	</form>
+</div>
+</body>
+</html>
