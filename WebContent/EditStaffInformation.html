@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href=".//layui/css/layui.css" media="all">
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<title>Insert title here</title>
+<script src=".//layui/layui.js"></script>
+
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">修改我的信息</div>
+          <div class="layui-card-body" pad15>
+            
+            <div class="layui-form" lay-filter="">
+              
+             <div class="layui-form-item" >
+                <label class="layui-form-label">工号</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="id" readonly="readonly"  name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="工号" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">不可修改</div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="password" readonly="readonly"  name="nickname" value="" lay-verify="nickname" autocomplete="off" placeholder="密码" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">不可修改</div>
+              </div>
+              
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="name"  name="nickname" value="" lay-verify="nickname" autocomplete="off" placeholder="用户名" class="layui-input">
+                </div>
+              </div>
+              
+               <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+ <input type="text" id="sex"  name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="性别" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="age"  name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="年龄" class="layui-input">
+                </div>
+              </div>
+              
+       
+              <div class="layui-form-item">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="telephone"  name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="电话号码" class="layui-input">
+                </div>
+              </div>
+         
+          <div class="layui-form-item">
+          <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" id="login" onclick="login()">确认</button>
+          </div>
+         
+         
+         
+            </div>
+            
+          </div>
+              
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   
+  
+  <script type="text/javascript">
+     $(document).ready(function () {
+    		init();
+    	});
+     function init(){
+     $.ajax({
+ 		type:'post',//get post
+ 		url:'MyselfinfoServlet',
+ 		data:{},
+ 		dataType:"json",//传回来的数据的类型 text json 
+ 		success:function(res){
+ 			document.getElementById('id').value = res.id;
+ 			document.getElementById('password').value = res.password;
+ 			document.getElementById('name').value = res.name;
+ 			document.getElementById('sex').value = res.sex;
+ 			document.getElementById('age').value = res.age;
+ 			document.getElementById('telephone').value = res.telephone;
+ 			
+		}
+ 		})	
+     }
+  </script>
+  
+    
+  <script type="text/javascript">
+ function login(){
+	 var id=$('#id').val();
+	 var password=$('#password').val();
+	 var name=$('#name').val();
+	 var sex=$('#sex').val();
+	 var age=$('#age').val();
+	 var telephone=$('#telephone').val();
+	$.ajax({
+		type:'post',//get post
+		url:'StaffHandler',
+		
+		data:{'id':id,'password':password,'name':name,'sex':sex,'age':age,'telephone':telephone,'method':Edit},//发送到服务器的数据
+		dataType:"text",//传回来的数据的类型 text json 
+		success:function(res){
+			console.log(res);
+			if(res=="fail"){
+				
+				alert("修改失败！！！");
+				//window.location.href="/WWS8/MainForm.html";
+			
+			
+		}else{
+			alert("修改成功！！！");
+		}
+			
+		}
+	});
+	
+	
+ }
+ </script>
+  
+  
+  
+</body>
+</html>

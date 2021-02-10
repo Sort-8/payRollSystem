@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href=".//layui/css/layui.css" media="all">
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<title>Insert title here</title>
+<script src=".//layui/layui.js"></script>
+
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">我的信息</div>
+          <div class="layui-card-body" pad15>
+            
+            <div class="layui-form" lay-filter="">
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">工号</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="id"  name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="工号" class="layui-input">
+                </div>
+                
+                
+              
+              </div>
+              
+              <div class="layui-form-item" >
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="password" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="密码" class="layui-input">
+                </div>
+              </div>
+              
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="name" readonly="readonly" name="nickname" value="" lay-verify="nickname" autocomplete="off" placeholder="用户名" class="layui-input">
+                </div>
+              </div>
+              
+               <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+ <input type="text" id="sex" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="性别" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="age" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="年龄" class="layui-input">
+                </div>
+              </div>
+              
+       
+              <div class="layui-form-item">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="telephone" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="电话号码" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">基础薪资</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="baseWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="基础薪资" class="layui-input">
+                </div>
+                
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">绩效薪资</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="meritWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="绩效薪资" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">扣罚薪资</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="punishingWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="扣罚薪资" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">总薪资</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="totalWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="总薪资" class="layui-input">
+                </div>
+              </div>
+              
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="department" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="所属部门" class="layui-input">
+                </div>
+              </div>
+              
+             <div class="layui-form-item">
+                <label class="layui-form-label">账号状态</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="status" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="账号状态" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">薪资审核状态</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="salaryAudit" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="薪资审核状态" class="layui-input">
+                </div>
+              </div>
+             
+              <div class="layui-form-item">
+                <label class="layui-form-label">周末加班时</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="weekendovertime" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="周末加班时" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">节日加班时长</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="festivalovertime" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="节日加班时长" class="layui-input">
+                </div>
+              </div>
+             
+              <div class="layui-form-item">
+                <label class="layui-form-label">提成</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="saleCommission" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="提成" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">福利奖金</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="festivalWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="福利奖金" class="layui-input">
+                </div>
+              </div>
+             
+              <div class="layui-form-item">
+                <label class="layui-form-label">年终奖金</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="yearendWages" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="年终奖金" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">迟到次数</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="lateCount" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="迟到次数" class="layui-input">
+                </div>
+              </div>
+             
+              <div class="layui-form-item">
+                <label class="layui-form-label">旷工次数</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="leaveCount" readonly="readonly" name="cellphone" value="" lay-verify="phone" autocomplete="off" placeholder="旷工次数" class="layui-input">
+                </div>
+              </div>
+              <a href="http://localhost:8080/WWS8/Edit.html">修改</a>              
+              
+            </div>
+            
+          </div>
+              
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   
+  
+  <script type="text/javascript">
+     $(document).ready(function () {
+    		init();
+    	});
+     function init(){
+     $.ajax({
+ 		type:'post',//get post
+ 		url:'http://localhost:8080/WWS8/MyselfinfoServlet',
+ 		data:{},
+ 		dataType:"json",//传回来的数据的类型 text json 
+ 		success:function(res){
+ 			document.getElementById('id').value = res.id;
+ 			document.getElementById('password').value = res.password;
+ 			document.getElementById('name').value = res.name;
+ 			document.getElementById('sex').value = res.sex;
+ 			document.getElementById('age').value = res.age;
+ 			document.getElementById('telephone').value = res.telephone;
+ 			document.getElementById('baseWages').value = res.baseWages;
+ 			document.getElementById('meritWages').value = res.meritWages;
+ 			document.getElementById('punishingWages').value = res.punishingWages;
+ 			document.getElementById('totalWages').value = res.totalWages;
+ 			document.getElementById('department').value = res.department;
+ 			document.getElementById('status').value = res.status;
+ 			document.getElementById('salaryAudit').value = res.salaryAudit;
+ 			document.getElementById('weekendovertime').value = res.weekendovertime;
+ 			document.getElementById('festivalovertime').value = res.festivalovertime;
+ 			document.getElementById('saleCommission').value = res.saleCommission;
+ 			document.getElementById('festivalWages').value = res.festivalWages;
+ 			document.getElementById('yearendWages').value = res.yearendWages;
+ 			document.getElementById('lateCount').value = res.festivalWages;
+ 			document.getElementById('leaveCount').value = res.yearendWages;
+		}
+ 		})	
+     }
+  </script>  
+  
+  
+  <!-- 
+ <script type="text/javascript">
+ function Edit()
+ {
+	
+	 layer.open({
+		 type:2
+	    ,title:'修改信息'
+	    ,content:'Edit.html'
+	      ,maxmin:true
+	    	  ,area:['500px','450px']
+	    		  ,btn:['确定','取消']
+	    		  ,yes:function(index,layero){
+	    			  //回调的数据
+	    			  var password=$(layero).find('iframe')[0].contentWindow.password.value;
+	    			 
+	    			  var name=$(layero).find('iframe')[0].contentWindow.document.getElementById('name').value;
+	    			  var sex=$(layero).find('iframe')[0].contentWindow.document.getElementById('sex').value;
+	    			  var age=$(layero).find('iframe')[0].contentWindow.document.getElementById('age').value;
+	    			  var telephone=$(layero).find('iframe')[0].contentWindow.document.getElementById('telephone').value;
+	    			  //var name=$(layero).find('iframe')[0].contentWindow.document.getElementById('name').value;
+	    			  
+	    			  
+	    			  obj.update({
+	    				  
+	    				  'password':password,
+	    				  'name':name,
+	    				  'sex':sex,
+	    				  'age':age,
+	    				  'telephone':telephone
+	    				  
+	    				 
+	    			  })
+	    			  
+	    			  $.ajax({
+	    				  url:'Edit?password='+password+"&name="+name+"&sex="+sex+"&age="+age+"&telephone="+telephone,
+	    				  type:'post',
+	    				  contentType:'application/json:charset=utf-8',
+	    				  dataType:'text',
+	    				  data:{
+	    					  'password':password,
+		    				  'name':name,
+		    				  'sex':sex,
+		    				  'age':age,
+		    				  'telephone':telephone
+	    				  },
+	    				  success:function(res){
+	    					  layer.msg('成功');
+	    				  },
+	    				  error:function(res){
+	    					  layer.mag('失败');
+	    				  }
+	    				  
+	    				  
+	    				  
+	    			  })
+	    			  
+	    			  layer.close(index);
+	    			 
+	    		  }
+	    
+	 ,success:function(layero,index){
+		 var div=layero.find('iframe').contents().find('#useradmin');
+    	 var body=layer.getChildFrame('body',index);
+    	 var iframeWindow=window['layui-layer-iframe'+index]
+    	 body.find('#password').val(data.password);
+    	 body.find('#name').val(data.name);
+    	 body.find('#sex').val(data.sex);
+    	 body.find('#age').val(data.age);
+    	 body.find('#telephone').val(data.telephone);
+    	 
+	 }
+	 
+	 });
+   }
+ 
+ </script>
+ -->
+</body>
+</html>

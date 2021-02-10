@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>汇总</title>
+  <link rel="stylesheet" href="layui/layui/css/layui.css"  media="all">
+</head>
+<body>
+
+<div class="layui-input-inline" >
+	<button type="button" onclick="edit()" class="layui-btn layui-btn-normal" id="button1" >修改某账户的5项薪资标准</button>
+</div>
+
+<table class="layui-hide" id="demo"></table>
+ 
+<script src="layui/layui/layui.js"></script>
+<script>
+layui.use(['table','layer'], function(){
+  var table = layui.table;
+  
+  //第一个实例
+  table.render({
+    elem: '#demo'
+    ,height: 600
+    ,url: 'http://localhost:8080/db_shixiguanli/GetSumServlet' //数据接口
+    ,page: false //开启分页
+    ,cols: [[ //表头
+      {field: 'userid', title: '账户名', width:130, sort: true, fixed: 'left'}
+      ,{field: 'base_standard', title: '基本薪资标准（每月）', width:160}
+      ,{field: 'wek_work_standard', title: '周末加班标准（每小时）', width:160}
+      ,{field: 'vac_work_standard', title: '假期加班标准（每小时）', width:160} 
+      ,{field: 'wek_work_time', title: '周末加班时长（小时）', width: 160}
+      ,{field: 'vac_work_time', title: '假期加班时长（小时）', width: 80}
+      ,{field: 'late_standard', title: '迟到扣薪标准（每次）', width: 80}
+      ,{field: 'absent_standard', title: '旷工扣薪标准（每次）', width: 80}
+      ,{field: 'late_time', title: '迟到次数', width: 80}
+      ,{field: 'absent_time', title: '旷工次数', width: 80}
+      ,{field: 'fuli_reward', title: '福利薪资', width: 80}
+      ,{field: 'year_reward', title: '年终奖', width: 80}
+      ,{field: 'ticheng_wage', title: '提成', width: 80}
+      ,{field: 'sum_wage', title: '合计薪资', width: 100, sort:true}
+    ]]
+  });
+  
+});
+
+function edit() {
+    layui.use('layer', function () {
+    	var layer = layui.layer;
+        layer.open({
+            type: 2,
+            content: ["xiugai-form.html"],   //添加页，后台controller转发到指定页
+            area: ["600px", "400px"],
+            title: ['修改薪资标准'],
+            fixed: true,
+            shadeClose: false,
+            
+            end: function () {  //刷新页面
+                location.reload();
+            }
+        })
+        
+        
+    })
+}
+
+</script>
+</body>
+</html>

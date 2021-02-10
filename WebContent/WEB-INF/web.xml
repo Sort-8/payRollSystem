@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>payRollSystem</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+		<servlet-name>DepartmentHandler</servlet-name>
+		<servlet-class>com.steam.controller.DepartmentHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DepartmentHandler</servlet-name>
+		<url-pattern>/DepartmentHandler</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>StaffHandler</servlet-name>
+		<servlet-class>com.steam.controller.StaffHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StaffHandler</servlet-name>
+		<url-pattern>/user</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CheckLoginServlet</servlet-name>
+		<servlet-class>com.steam.controller.CheckLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CheckLoginServlet</servlet-name>
+		<url-pattern>/CheckLoginServlet</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>Edit</servlet-name>
+		<servlet-class>com.steam.controller.Edit</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Edit</servlet-name>
+		<url-pattern>/Edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MyselfinfoServlet</servlet-name>
+		<servlet-class>com.steam.controller.MyselfinfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MyselfinfoServlet</servlet-name>
+		<url-pattern>/MyselfinfoServlet</url-pattern>
+	</servlet-mapping>
+		
+  <servlet>
+		<servlet-name>salaryStandardHandler</servlet-name>
+		<servlet-class>com.steam.controller.SalaryStandardHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>salaryStandardHandler</servlet-name>
+		<url-pattern>/salaryStandardHandler</url-pattern>
+	</servlet-mapping>
+
+</web-app>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="layui/layui/css/layui.css"  media="all">
+<script src="layui/layui/layui.js"></script>
+</head>
+<body>
+
+<!-- 输入各项标准 -->
+<div class="layui-form-item">
+  <div class="layui-input-block">
+  
+    <form class="layui-form" action="UPdataStandardServlet" method="get">
+		<p>账户名</p>  <input type="text" name="userid" lay-verify="number" required placeholder="账户名" class="layui-input"><br>
+		<p>基本工资标准</p><input type="text" name="base_standard" lay-verify="number" required  placeholder="基本工资标准" class="layui-input"><br>
+		<p>周末加班标准</p><input type="text" name="wek_work_standard" lay-verify="number"  required placeholder="周末加班标准" class="layui-input"><br>
+		<p>假期加班标准</p><input type="text" name="vac_work_standard" lay-verify="number"  required placeholder="假期加班标准" class="layui-input"><br>
+		<p>迟到扣薪标准</p><input type="text" name="late_standard" lay-verify="number"  required placeholder="迟到扣薪标准" class="layui-input"><br>
+		<p>旷工扣薪标准</p><input type="text" name="absent_standard" lay-verify="number" required placeholder="旷工扣薪标准" class="layui-input">
+		
+		<input type="submit" value="确认修改" onclick="freload()" class="layui-btn layui-btn-danger">
+		<input type="reset" value="重置" class="layui-btn layui-btn-primary">
+	</form>
+  </div>
+</div>
+	
+	
+<script>
+function freload(){
+	window.parent.location.reload();
+}
+</script>
+</body>
+</html>
